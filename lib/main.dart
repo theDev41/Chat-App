@@ -1,12 +1,17 @@
 import 'package:chat_app_firebase/screens/auth/login_screen.dart';
 import 'package:chat_app_firebase/screens/home_screen.dart';
+import 'package:chat_app_firebase/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'firebase_options.dart';
 // variable for screen size
 late Size mq;
 
 void main() async {
+
+
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   runApp(const MyApp());
 
 
@@ -40,7 +45,7 @@ class MyApp extends StatelessWidget {
 
 
       ),
-      home:LoginScreen(),
+      home:SplashScreen(),
     );
   }
 }

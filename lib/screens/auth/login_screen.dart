@@ -1,5 +1,7 @@
 import 'package:chat_app_firebase/screens/home_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../main.dart';
 
@@ -26,6 +28,31 @@ class _HomeScreenState extends State<LoginScreen> {
       });
     });
   }
+
+  googleButton_handleClick(){
+         _signInWithGoogle();
+  }
+
+
+  Future<UserCredential> _signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
 
@@ -38,6 +65,9 @@ class _HomeScreenState extends State<LoginScreen> {
 
       ),
  body: Stack(children: [
+
+
+   //animation widget code
 
      AnimatedPositioned(
 
@@ -68,7 +98,11 @@ class _HomeScreenState extends State<LoginScreen> {
 
          onPressed: (){
 
-           Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+           googleButton_handleClick().then((user){
+
+
+             Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const HomeScreen()));
+           });
 
          },
          icon:Image.asset('assets/images/google.png',height: mq.height * .05,) , label: Text('Login with Google',style: TextStyle(color: Colors.black,fontSize: 18),), ))
